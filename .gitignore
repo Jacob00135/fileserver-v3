@@ -1,2 +1,5 @@
 venv
 开发笔记.txt
+start.ps1
+__pycache__
+database_sqlite
