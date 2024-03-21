@@ -1,8 +1,7 @@
 import os
 import sqlite3
 from werkzeug.security import generate_password_hash
-from flask import Flask
-from flask_login import LoginManager
+from flask import Flask, current_app, g
 from utils import get_all_disk_path
 
 root_path = os.path.dirname(os.path.realpath(__file__))
@@ -12,10 +11,6 @@ if not os.path.exists(database_path):
 
 disk_path_list = list(get_all_disk_path())
 
-"""
-login_manager = LoginManager()
-login_manager.login_view = 'auth.login'
-"""
 
 class Config(object):
     # Flask app初始化时所必须的密钥
@@ -120,17 +115,35 @@ def init_database(config_obj):
     con.close()
 
 
+def get_db():
+    if 'db' not in g:
+        g.db = sqlite3.connect(
+            current_app.config['DATABASE_PATH'],
+            detect_types=sqlite3.PARSE_DECLTYPES
+        )
+        g.db.row_factory = sqlite3.Row
+
+    return g.db
+
+
+def close_db(exception_message=None):
+    db = g.pop('db', None)
+
+    if db is not None:
+        db.close()
+
+
 def create_app(config_name):
     # 选择环境
     app = Flask(__name__)
     config_obj = config_mapping[config_name]
     app.config.from_object(config_obj)
 
-    # Flask扩展配置
-    # login_manager.init_app(app)
-
     # 初始化数据库
     init_database(config_obj)
+
+    # 让每一次请求结束后，关闭与数据库的连接
+    app.teardown_appcontext(close_db)
 
     # 注册蓝图
     from main_views import main_blueprint
