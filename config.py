@@ -49,6 +49,10 @@ class TestConfig(Config):
 
 
 class Permission(object):
+    permission_mapping = {
+        1: '游客',
+        4: '管理员'
+    }
     anonymous = 1
     admin = 4
 

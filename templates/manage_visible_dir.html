@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}管理可见目录{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/css/manage_visible_dir.css" />
+{% endblock style %}
+
+{% block content %}
+
+<main>
+    <h1>可见目录管理</h1>
+
+    <button type="button" id="append">添加</button>
+
+    <ul id="data">
+        <li class="row">
+            <div class="col path">路径</div>
+            <div class="col permission">权限</div>
+            <div class="col delete">操作</div>
+        </li>
+        {% for vd in vd_list %}
+            <li class="row">
+                <div class="col path">{{ vd['dir_path'] }}</div>
+                <div class="col permission">{{ permission_mapping[vd['dir_permission']] }}</div>
+                <div class="col delete">
+                    <a href="{{ url_for('auth.delete_visible_dir', dir_id=vd['dir_id']) }}">删除</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</main>
+
+{% endblock content %}

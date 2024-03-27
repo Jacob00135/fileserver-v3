@@ -1,0 +1,97 @@
+body {
+    padding-top: 80px;
+}
+
+main {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h1 {
+    margin-top: 0;
+    text-align: center;
+    color: #c2c7d0;
+}
+
+#append {
+    display: block;
+    margin: 0 auto;
+    padding: 9px 20px;
+    border-width: 0;
+    border-radius: 4px;
+    background-color: #667091;
+    font-size: 16px;
+    color: #c2c7d0;
+    cursor: pointer;
+}
+
+#append:hover {
+    background-color: #373d50;
+}
+
+/* region 表格 */
+#data {
+    margin-top: 16px;
+    margin-bottom: 0;
+    padding: 0;
+    box-shadow: 0 0 10px 2px #202632;
+    background-color: #2c303f;
+    color: #c2c7d0;
+    cursor: default;
+    font-size: 14px;
+}
+
+#data > .row {
+    display: flex;
+    border-top: 2px solid #202632;
+    list-style: none;
+}
+
+#data > .row:first-child {
+    border-top-width: 0;
+    border-bottom: 2px solid #202632;
+    background-color: #373d50;
+    font-weight: 700;
+}
+
+#data > .row > .col {
+    border-left: 2px solid #202632;
+}
+
+#data > .row > .col:first-child {
+    border-left-width: 0;
+}
+
+#data > .row > .col.path {
+    flex: 1;
+    padding: 10px 20px;
+    word-break: break-all;
+}
+
+#data > .row > .col.permission {
+    width: 66px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+#data > .row:first-child > .col.delete {
+    width: 50px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+#data > .row:nth-child(n + 2) > .col.delete {
+    width: 50px;
+}
+
+#data > .row:nth-child(n + 2) > .col.delete > a {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    background-color: #a73434;
+    text-align: center;
+    text-decoration: none;
+    color: #d2d6df;
+}
+/* endregion */

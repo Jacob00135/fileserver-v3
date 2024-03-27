@@ -18,11 +18,16 @@
     <nav>
         <div class="content">
             <a class="index" href="{{ url_for('main.index') }}">主页</a>
-            {% if is_login() %}
-                <a class="logout" href="{{ url_for('auth.logout') }}">登出</a>
-            {% else %}
-                <a class="login" href="{{ url_for('auth.login') }}">登录</a>
-            {% endif %}
+
+            <div class="right">
+                {% if is_login() %}
+                    <a class="manage" href="{{ url_for('auth.manage_visible_dir') }}">管理</a>
+                    <a class="logout" href="{{ url_for('auth.logout') }}">登出</a>
+                {% else %}
+                    <a class="login" href="{{ url_for('auth.login') }}">登录</a>
+                {% endif %}
+            </div>
+
         </div>
     </nav>
 

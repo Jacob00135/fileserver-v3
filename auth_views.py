@@ -1,11 +1,21 @@
+from functools import wraps
 from werkzeug.security import check_password_hash
 from flask import (
     Blueprint, request, session, url_for, render_template, flash,
     redirect, abort
 )
-from config import get_db
+from config import get_db, Permission
 
 auth_blueprint = Blueprint('auth', __name__)
+
+
+def login_required(func):
+    @wraps(func)
+    def decorator(*args, **kwargs):
+        if session.get('user_id') is None:
+            return redirect(url_for('auth.login'))
+        return func(*args, **kwargs)
+    return decorator
 
 
 @auth_blueprint.route('/login', methods=['GET', 'POST'])
@@ -42,7 +52,33 @@ def login():
     return redirect(url_for('main.index'))
 
 
-@auth_blueprint.route('/logout', methods=['GET'])
+@auth_blueprint.route('/logout')
 def logout():
     session.pop('user_id', None)
     return redirect(url_for('main.index'))
+
+
+@auth_blueprint.route('/manage')
+@login_required
+def manage_visible_dir():
+    db = get_db()
+    vd_list = db.execute(
+        'SELECT * FROM `visible_dir` ORDER BY `dir_permission`;'
+    ).fetchall()
+    return render_template(
+        'manage_visible_dir.html',
+        vd_list=vd_list,
+        permission_mapping=Permission.permission_mapping
+    )
+
+
+@auth_blueprint.route('/delete_visible_dir/<int:dir_id>')
+@login_required
+def delete_visible_dir(dir_id):
+    db = get_db()
+    db.execute(
+        'DELETE FROM `visible_dir` WHERE `dir_id`=?;',
+        (dir_id, )
+    )
+    db.commit()
+    return redirect(url_for('auth.manage_visible_dir'))
