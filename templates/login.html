@@ -1,16 +1,27 @@
-<form method="POST" action="/auth/login">
-    <input name="username" type="text" />
-    <br />
-    <input name="password" type="text" />
-    <input type="submit" value="登录" />
-</form>
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul>
-        {% for msg in messages %}
-            <li>{{ msg }}</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-{% endwith %}
+{% extends "base.html" %}
 
+{% block title %}登录{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/css/login.css" />
+{% endblock style %}
+
+{% block content %}
+
+<form method="POST" action="/auth/login" name="login">
+    <h1>登录</h1>
+    <input name="username" type="text" placeholder="账号" />
+    <input name="password" type="password" placeholder="密码" />
+    <button type="submit">登录</button>
+
+    {% for msg in get_flashed_messages() %}
+        <p class="flash-message">{{ msg }}</p>
+    {% endfor %}
+
+</form>
+
+{% endblock content %}
+
+{% block javascript %}
+    <script src="/static/js/login.js"></script>
+{% endblock javascript %}

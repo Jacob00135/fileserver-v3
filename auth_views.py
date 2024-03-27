@@ -12,7 +12,7 @@ auth_blueprint = Blueprint('auth', __name__)
 def login():
     # 不允许已经登录的用户访问
     if session.get('user_id') is not None:
-        abort(403)
+        return redirect(url_for('main.index'))
 
     # GET请求
     if request.method == 'GET':
@@ -39,4 +39,10 @@ def login():
     # 登录
     session['user_id'] = user['user_id']
 
+    return redirect(url_for('main.index'))
+
+
+@auth_blueprint.route('/logout', methods=['GET'])
+def logout():
+    session.pop('user_id', None)
     return redirect(url_for('main.index'))

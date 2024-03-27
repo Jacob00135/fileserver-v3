@@ -1,7 +1,7 @@
 import os
 import sqlite3
 from werkzeug.security import generate_password_hash
-from flask import Flask, current_app, g
+from flask import Flask, current_app, g, session
 from utils import get_all_disk_path
 
 root_path = os.path.dirname(os.path.realpath(__file__))
@@ -133,6 +133,16 @@ def close_db(exception_message=None):
         db.close()
 
 
+def inject_templates():
+
+    def is_login():
+        return session.get('user_id') is not None
+
+    return dict(
+        is_login=is_login
+    )
+
+
 def create_app(config_name):
     # 选择环境
     app = Flask(__name__)
@@ -150,6 +160,9 @@ def create_app(config_name):
     from auth_views import auth_blueprint
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+    # 往JinJa模板环境中注入变量
+    app.context_processor(inject_templates)
 
     return app
 
