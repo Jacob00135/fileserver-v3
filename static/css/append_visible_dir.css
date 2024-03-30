@@ -1,0 +1,97 @@
+body {
+    padding-top: 80px;
+}
+
+h1 {
+    margin-top: 0;
+    text-align: center;
+    color: #c2c7d0;
+}
+
+form[name="add"] {
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 400px;
+    height: 300px;
+    margin-left: -200px;
+    margin-top: -150px;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, .1);
+    background-color: #202431;
+}
+
+form[name="add"] input {
+    box-sizing: border-box;
+    display: block;
+    padding: 0 10px 0 10px;
+    border-radius: 4px;
+    border-width: 0;
+    background-color: #ebeae7;
+    width: 100%;
+    height: 35px;
+    font-size: 16px;
+    outline: none;
+}
+
+form[name="add"] .select-permission {
+    display: flex;
+    height: 35px;
+    margin-top: 20px;
+}
+
+form[name="add"] .select-permission label {
+    padding: 0 10px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background-color: #ebeae7;
+    font-size: 16px;
+    line-height: 35px;
+}
+
+form[name="add"] .select-permission select {
+    flex: 1;
+    padding-left: 10px;
+    background-color: #ebeae7;
+    border-width: 0;
+    border-left: 1px solid #8491b9;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+}
+
+form[name="add"] button[type="submit"] {
+    display: block;
+    margin: 20px auto 0 auto;
+    padding: 9px 20px;
+    border-radius: 4px;
+    border-width: 0;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+form[name="add"] button[type="submit"]:hover {
+    background-color: #99a3c3;
+}
+
+.flash-message {
+    margin-top: 16px;
+    margin-bottom: 0;
+    color: #ff8585;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* region 移动端适配 */
+@media (max-width: 400px) {
+    form[name="add"] {
+        left: 0;
+        width: 100%;
+        margin-left: 0;
+    }
+}
+/* endregion */

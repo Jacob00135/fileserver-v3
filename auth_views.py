@@ -1,3 +1,4 @@
+import os
 from functools import wraps
 from werkzeug.security import check_password_hash
 from flask import (
@@ -81,4 +82,48 @@ def delete_visible_dir(dir_id):
         (dir_id, )
     )
     db.commit()
+    return redirect(url_for('auth.manage_visible_dir'))
+
+
+@auth_blueprint.route('/append_visible_dir', methods=['GET', 'POST'])
+@login_required
+def append_visible_dir():
+    if request.method == 'GET':
+        return render_template(
+            'append_visible_dir.html',
+            permission_mapping=Permission.permission_mapping
+        )
+
+    db = get_db()
+
+    # 检查路径是否存在磁盘中
+    path = request.form.get('path', '', type=str)
+    if (not os.path.exists(path)) or (not os.path.isdir(path)):
+        flash('路径不存在或不是目录')
+        return redirect(url_for('auth.append_visible_dir'))
+
+    path = os.path.realpath(path)
+
+    # 检查路径是否存在数据库中
+    record = db.execute(
+        'SELECT * FROM `visible_dir` WHERE `dir_path`=?;',
+        (path, )
+    ).fetchone()
+    if record is not None:
+        flash('路径已被添加过')
+        return redirect(url_for('auth.append_visible_dir'))
+
+    # 检查权限值
+    permission = request.form.get('permission', 1, type=int)
+    if permission not in Permission.permission_mapping:
+        flash('权限值不合法')
+        return redirect(url_for('auth.append_visible_dir'))
+
+    # 添加
+    db.execute(
+        'INSERT INTO `visible_dir`(`dir_path`, `dir_permission`) VALUES(?, ?);',
+        (path, permission)
+    )
+    db.commit()
+
     return redirect(url_for('auth.manage_visible_dir'))

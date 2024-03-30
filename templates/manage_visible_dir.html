@@ -11,7 +11,9 @@
 <main>
     <h1>可见目录管理</h1>
 
-    <button type="button" id="append">添加</button>
+    <div class="append-visible-dir">
+        <a href="{{ url_for('auth.append_visible_dir') }}" id="append">添加</a>
+    </div>
 
     <ul id="data">
         <li class="row">

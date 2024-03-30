@@ -14,16 +14,17 @@ h1 {
     color: #c2c7d0;
 }
 
+.append-visible-dir {
+    text-align: center;
+}
+
 #append {
-    display: block;
-    margin: 0 auto;
     padding: 9px 20px;
-    border-width: 0;
     border-radius: 4px;
     background-color: #667091;
     font-size: 16px;
     color: #c2c7d0;
-    cursor: pointer;
+    text-decoration: none;
 }
 
 #append:hover {
@@ -66,7 +67,7 @@ h1 {
 #data > .row > .col.path {
     flex: 1;
     padding: 10px 20px;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 #data > .row > .col.permission {

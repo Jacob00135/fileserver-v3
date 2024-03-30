@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}添加可见目录{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/css/append_visible_dir.css" />
+{% endblock style %}
+
+{% block content %}
+
+<form method="POST" action="{{ url_for('auth.append_visible_dir') }}" name="add">
+    <h1>添加可见目录</h1>
+    <input name="path" type="text" placeholder="路径" required autocomplete="off" />
+    <div class="select-permission">
+        <label>访问权限</label>
+        <select name="permission">
+            {% for v, t in permission_mapping.items() %}
+                <option value="{{ v }}">{{ t }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit">添加</button>
+
+    {% for msg in get_flashed_messages() %}
+        <p class="flash-message">{{ msg }}</p>
+    {% endfor %}
+
+</form>
+
+{% endblock content %}

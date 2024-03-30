@@ -8,10 +8,10 @@
 
 {% block content %}
 
-<form method="POST" action="/auth/login" name="login">
+<form method="POST" action="{{ url_for('auth.login') }}" name="login">
     <h1>登录</h1>
-    <input name="username" type="text" placeholder="账号" />
-    <input name="password" type="password" placeholder="密码" />
+    <input name="username" type="text" placeholder="账号" required autocomplete="off" />
+    <input name="password" type="password" placeholder="密码" required autocomplete="off" />
     <button type="submit">登录</button>
 
     {% for msg in get_flashed_messages() %}

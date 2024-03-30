@@ -110,7 +110,7 @@ def init_database(config_obj):
 
         cursor.execute(
             'INSERT INTO `visible_dir`(`dir_path`, `dir_permission`) VALUES(?, ?);',
-            (disk_path, Permission.admin)
+            (os.path.realpath(disk_path), Permission.admin)
         )
         con.commit()
 
