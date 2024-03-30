@@ -1,9 +1,9 @@
 import os
 from functools import wraps
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from flask import (
     Blueprint, request, session, url_for, render_template, flash,
-    redirect, abort
+    redirect, abort, current_app
 )
 from config import get_db, Permission
 
@@ -59,6 +59,40 @@ def logout():
     return redirect(url_for('main.index'))
 
 
+@auth_blueprint.route('modify_password', methods=['GET', 'POST'])
+@login_required
+def modify_password():
+    if request.method == 'GET':
+        return render_template('modify_password.html')
+
+    # 检查密码长度是否合法
+    password = request.form.get('password', '', type=str)
+    length = len(password)
+    if length < 6 or length > 16:
+        flash('密码长度只能是6~16')
+        return redirect(url_for('auth.modify_password'))
+
+    # 检查密码字符是否合法
+    allow_char = current_app.config['PASSWORD_ALLOW_CHAR']
+    for c in password:
+        if c not in allow_char:
+            flash('包含不合法字符')
+            return redirect(url_for('auth.modify_password'))
+    
+    db = get_db()
+
+    # 修改密码
+    user_id = session['user_id']
+    password_hash = generate_password_hash(password)
+    db.execute(
+        'UPDATE `users` SET `user_password_hash`=? WHERE `user_id`=?;',
+        (password_hash, user_id)
+    )
+    db.commit()
+
+    return redirect(url_for('main.index'))
+
+
 @auth_blueprint.route('/manage')
 @login_required
 def manage_visible_dir():
@@ -94,8 +128,6 @@ def append_visible_dir():
             permission_mapping=Permission.permission_mapping
         )
 
-    db = get_db()
-
     # 检查路径是否存在磁盘中
     path = request.form.get('path', '', type=str)
     if (not os.path.exists(path)) or (not os.path.isdir(path)):
@@ -103,6 +135,7 @@ def append_visible_dir():
         return redirect(url_for('auth.append_visible_dir'))
 
     path = os.path.realpath(path)
+    db = get_db()
 
     # 检查路径是否存在数据库中
     record = db.execute(
