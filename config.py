@@ -114,6 +114,20 @@ def init_database(config_obj):
         )
         con.commit()
 
+    # 检查所有可见目录是否存在，若不存在则删除
+    records = cursor.execute(
+        'SELECT `dir_id`, `dir_path` FROM `visible_dir`;'
+    ).fetchall()
+    delete_id_list = []
+    for dir_id, dir_path in records:
+        if not os.path.exists(dir_path):
+            delete_id_list.append((dir_id, ))
+    cursor.executemany(
+        'DELETE FROM `visible_dir` WHERE `dir_id`=?;',
+        delete_id_list
+    )
+    con.commit()
+
     # 关闭连接
     cursor.close()
     con.close()

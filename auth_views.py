@@ -6,6 +6,7 @@ from flask import (
     redirect, abort, current_app
 )
 from config import get_db, Permission
+from model import check_visible_dir_exists
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -96,6 +97,8 @@ def modify_password():
 @auth_blueprint.route('/manage')
 @login_required
 def manage_visible_dir():
+    check_visible_dir_exists()
+
     db = get_db()
     vd_list = db.execute(
         'SELECT * FROM `visible_dir` ORDER BY `dir_permission`;'
