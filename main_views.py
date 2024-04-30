@@ -1,4 +1,8 @@
-from flask import Blueprint, render_template, abort
+import os
+from flask import (
+    Blueprint, render_template, abort, session, request, send_from_directory
+)
+from config import Permission, get_db
 
 main_blueprint = Blueprint('main', __name__)
 
@@ -49,4 +53,78 @@ def method_not_allowed(e):
 
 @main_blueprint.route('/')
 def index():
-    abort(404)
+    # 获取访问权限
+    if session.get('user_id') is None:
+        permission = Permission.anonymous
+    else:
+        permission = Permission.admin
+
+    db = get_db()
+
+    # 获取vd参数
+    vd = request.args.get('vd')
+    if vd is None:
+        # 显示根目录
+        vd_list = db.execute(
+            """
+            SELECT `dir_id`, `dir_path` FROM `visible_dir`
+            WHERE `dir_permission` <= ?;
+            """,
+            (permission, )
+        ).fetchall()
+
+        return render_template(
+            'index.html',
+            vd=vd,
+            vd_list=vd_list
+        )
+
+    # 检查vd参数
+    record = db.execute(
+        'SELECT * FROM `visible_dir` WHERE `dir_path` = ?;',
+        (vd, )
+    ).fetchone()
+    if record is None:
+        abort(404)
+    if record['dir_permission'] > permission:
+        abort(403)
+
+    # 获取path参数
+    path = request.args.get('path')
+    if path is None:
+        # 显示一个可见目录下的所有文件
+        filenames = os.listdir(vd)
+
+        return render_template(
+            'index.html',
+            vd=vd,
+            paths=filenames,
+            filenames=filenames
+        )
+
+    # 检查path参数合法性
+    final_path = os.path.join(vd, path)
+    if (not os.path.exists(final_path)) \
+       or (not os.path.isabs(final_path)) \
+       or (os.path.islink(final_path)):
+        abort(404)
+    final_path = os.path.realpath(final_path)
+
+    # 如果想访问目录，则显示目录下的所有文件
+    if os.path.isdir(final_path):
+        filenames = os.listdir(final_path)
+        paths = [os.path.join(path, fn) for fn in filenames]
+
+        return render_template(
+            'index.html',
+            vd=vd,
+            paths=paths,
+            filenames=filenames
+        )
+
+    dirname, basename = os.path.split(final_path)
+    return send_from_directory(
+        directory=dirname,
+        path=basename,
+        as_attachment=False
+    )

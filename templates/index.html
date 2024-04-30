@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}主页{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/css/index.css" />
+{% endblock style %}
+
+{% block content %}
+
+<main>
+    {% if vd %}
+        {% for fn in filenames %}
+            <a href="{{ url_for('main.index', vd=vd, path=paths[loop.index0]) }}">{{ fn }}</a>
+        {% endfor %}
+    {% else %}
+        {% for v in vd_list %}
+            <a href="{{ url_for('main.index', vd=v['dir_path']) }}">{{ v['dir_path'] }}</a>
+        {% endfor %}
+    {% endif %}
+</main>
+
+{% endblock content %}
