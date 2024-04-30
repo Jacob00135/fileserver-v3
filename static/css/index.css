@@ -1,8 +1,121 @@
+/* icon font */
+@font-face {
+    font-family: 'icomoon';
+    src:  url('../fonts/icomoon.eot?mwevy9');
+    src:  url('../fonts/icomoon.eot?mwevy9#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?mwevy9') format('truetype'),
+    url('../fonts/icomoon.woff?mwevy9') format('woff'),
+    url('../fonts/icomoon.svg?mwevy9#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-music:before {
+    content: "\e911";
+}
+.icon-file-text:before {
+    content: "\e922";
+}
+.icon-file-picture:before {
+    content: "\e927";
+}
+.icon-file-play:before {
+    content: "\e929";
+}
+.icon-file-zip:before {
+    content: "\e92b";
+}
+.icon-folder:before {
+    content: "\e92f";
+}
+.icon-question:before {
+    content: "\ea09";
+}
+
 body {
     padding-top: 80px;
 }
 
+main {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 main > a {
-    display: block;
-    text-align: center;
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid #202632;
+    background-color: #2c303f;
+    color: rgb(194, 199, 208);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+main > a:hover {
+    background-color: #373d50;
+}
+
+main > a > [class^="icon-"] {
+    align-self: center;
+    width: 14px;
+    height: 14px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+main > a > [class^="icon-"][data-file-type=dir] {
+    color: #ffdc78;
+}
+
+main > a > [class^="icon-"][data-file-type=video] {
+    color: #70c3ff;
+}
+
+main > a > [class^="icon-"][data-file-type=audio] {
+    color: #f6801f;
+}
+
+main > a > [class^="icon-"][data-file-type=image] {
+    color: #c4fff1;
+}
+
+main > a > [class^="icon-"][data-file-type=package] {
+    color: #ffdc78;
+}
+
+main > a > [class^="icon-"][data-file-type=text] {
+    color: #aedfd0;
+}
+
+main > a > [class^="icon-"][data-file-type=unknown] {
+    color: #f8f9fa;
+}
+
+main > a > .filename {
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+/* 移动端适配 */
+@media (max-width: 575px) {
+    main > a {
+        font-size: 12px;
+    }
 }

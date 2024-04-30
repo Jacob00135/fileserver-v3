@@ -3,6 +3,7 @@ from flask import (
     Blueprint, render_template, abort, session, request, send_from_directory
 )
 from config import Permission, get_db
+from utils import get_file_type
 
 main_blueprint = Blueprint('main', __name__)
 
@@ -94,12 +95,15 @@ def index():
     if path is None:
         # 显示一个可见目录下的所有文件
         filenames = os.listdir(vd)
+        filepaths = map(lambda fn: os.path.join(vd, fn), filenames)
+        file_type_list = get_file_type(filepaths)
 
         return render_template(
             'index.html',
             vd=vd,
             paths=filenames,
-            filenames=filenames
+            filenames=filenames,
+            file_type_list=file_type_list
         )
 
     # 检查path参数合法性
@@ -110,21 +114,25 @@ def index():
         abort(404)
     final_path = os.path.realpath(final_path)
 
-    # 如果想访问目录，则显示目录下的所有文件
-    if os.path.isdir(final_path):
-        filenames = os.listdir(final_path)
-        paths = [os.path.join(path, fn) for fn in filenames]
-
-        return render_template(
-            'index.html',
-            vd=vd,
-            paths=paths,
-            filenames=filenames
+    # 访问文件时的情况
+    if os.path.isfile(final_path):
+        dirname, basename = os.path.split(final_path)
+        return send_from_directory(
+            directory=dirname,
+            path=basename,
+            as_attachment=False
         )
 
-    dirname, basename = os.path.split(final_path)
-    return send_from_directory(
-        directory=dirname,
-        path=basename,
-        as_attachment=False
+    # 如果想访问目录，则显示目录下的所有文件
+    filenames = os.listdir(final_path)
+    paths = [os.path.join(path, fn) for fn in filenames]
+    filepaths = map(lambda fn: os.path.join(final_path, fn), filenames)
+    file_type_list = get_file_type(filepaths)
+
+    return render_template(
+        'index.html',
+        vd=vd,
+        paths=paths,
+        filenames=filenames,
+        file_type_list=file_type_list
     )

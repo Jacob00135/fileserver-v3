@@ -156,8 +156,19 @@ def inject_templates():
     def is_login():
         return session.get('user_id') is not None
 
+    type_class_map = {
+        'dir': 'icon-folder',
+        'video': 'icon-file-play',
+        'audio': 'icon-music',
+        'image': 'icon-file-picture',
+        'package': 'icon-file-zip',
+        'text': 'icon-file-text',
+        'unknown': 'icon-question'
+    }
+
     return dict(
-        is_login=is_login
+        is_login=is_login,
+        type_class_map=type_class_map
     )
 
 

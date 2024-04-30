@@ -11,11 +11,18 @@
 <main>
     {% if vd %}
         {% for fn in filenames %}
-            <a href="{{ url_for('main.index', vd=vd, path=paths[loop.index0]) }}">{{ fn }}</a>
+            <a href="{{ url_for('main.index', vd=vd, path=paths[loop.index0]) }}">
+                <div class="{{ type_class_map[file_type_list[loop.index0]] }}"
+                     data-file-type="{{ file_type_list[loop.index0] }}"></div>
+                <div class="filename">{{ fn }}</div>
+            </a>
         {% endfor %}
     {% else %}
         {% for v in vd_list %}
-            <a href="{{ url_for('main.index', vd=v['dir_path']) }}">{{ v['dir_path'] }}</a>
+            <a href="{{ url_for('main.index', vd=v['dir_path']) }}">
+                <div class="icon-folder" data-file-type="dir"></div>
+                <div class="filename">{{ v['dir_path'] }}</div>
+            </a>
         {% endfor %}
     {% endif %}
 </main>
