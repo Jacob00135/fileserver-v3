@@ -10,11 +10,12 @@
 
 <main>
     {% if vd %}
-        {% for fn in filenames %}
+        {% for f in myfiles %}
             <a href="{{ url_for('main.index', vd=vd, path=paths[loop.index0]) }}">
-                <div class="{{ type_class_map[file_type_list[loop.index0]] }}"
-                     data-file-type="{{ file_type_list[loop.index0] }}"></div>
-                <div class="filename">{{ fn }}</div>
+                <div class="{{ type_class_map[f.file_type] }}"
+                     data-file-type="{{ f.file_type }}"></div>
+                <div class="filename">{{ f.filename }}</div>
+                <div class="size">{{ f.size_str }}</div>
             </a>
         {% endfor %}
     {% else %}

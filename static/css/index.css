@@ -109,13 +109,24 @@ main > a > [class^="icon-"][data-file-type=unknown] {
 }
 
 main > a > .filename {
+    flex: 1;
     word-wrap: break-word;
     word-break: break-all;
+}
+
+main > a > .size {
+    align-self: center;
+    width: 80px;
+    text-align: right;
 }
 
 /* 移动端适配 */
 @media (max-width: 575px) {
     main > a {
         font-size: 12px;
+    }
+
+    main > a > .size {
+        width: 70px;
     }
 }

@@ -3,7 +3,7 @@ from flask import (
     Blueprint, render_template, abort, session, request, send_from_directory
 )
 from config import Permission, get_db
-from utils import get_file_type
+from utils import MyFile, MyDir
 
 main_blueprint = Blueprint('main', __name__)
 
@@ -94,16 +94,14 @@ def index():
     path = request.args.get('path')
     if path is None:
         # 显示一个可见目录下的所有文件
-        filenames = os.listdir(vd)
-        filepaths = map(lambda fn: os.path.join(vd, fn), filenames)
-        file_type_list = get_file_type(filepaths)
+        mydir = MyDir(vd)
+        mydir.sort_files()
 
         return render_template(
             'index.html',
             vd=vd,
-            paths=filenames,
-            filenames=filenames,
-            file_type_list=file_type_list
+            paths=[f.filename for f in mydir.files],
+            myfiles=mydir.files
         )
 
     # 检查path参数合法性
@@ -124,15 +122,12 @@ def index():
         )
 
     # 如果想访问目录，则显示目录下的所有文件
-    filenames = os.listdir(final_path)
-    paths = [os.path.join(path, fn) for fn in filenames]
-    filepaths = map(lambda fn: os.path.join(final_path, fn), filenames)
-    file_type_list = get_file_type(filepaths)
+    mydir = MyDir(final_path)
+    mydir.sort_files()
 
     return render_template(
         'index.html',
         vd=vd,
-        paths=paths,
-        filenames=filenames,
-        file_type_list=file_type_list
+        paths=[os.path.join(path, f.filename) for f in mydir.files],
+        myfiles=mydir.files
     )
