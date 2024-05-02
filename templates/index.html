@@ -15,7 +15,9 @@
                 <div class="{{ type_class_map[f.file_type] }}"
                      data-file-type="{{ f.file_type }}"></div>
                 <div class="filename">{{ f.filename }}</div>
-                <div class="size">{{ f.size_str }}</div>
+                {% if f.file_type != 'dir' %}
+                    <div class="size">{{ f.size_str }}</div>
+                {% endif %}
             </a>
         {% endfor %}
     {% else %}
