@@ -90,12 +90,16 @@ def index():
     if record['dir_permission'] > permission:
         abort(403)
 
+    # 获取sort_by和sort_ascending参数
+    sort_by = request.args.get('sort_by', 'type')
+    sort_ascending = bool(request.args.get('sort_ascending', 0, type=int))
+
     # 获取path参数
     path = request.args.get('path')
     if path is None:
         # 显示一个可见目录下的所有文件
         mydir = MyDir(vd)
-        mydir.sort_files()
+        mydir.sort_files(by=sort_by, ascending=sort_ascending)
 
         return render_template(
             'index.html',
@@ -123,7 +127,7 @@ def index():
 
     # 如果想访问目录，则显示目录下的所有文件
     mydir = MyDir(final_path)
-    mydir.sort_files()
+    mydir.sort_files(by=sort_by, ascending=sort_ascending)
 
     return render_template(
         'index.html',

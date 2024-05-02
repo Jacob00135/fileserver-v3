@@ -8,26 +8,58 @@
 
 {% block content %}
 
+<dialog id="sort-dialog">
+    <form method="dialog">
+        <h3>排序方式</h3>
+        <select name="by">
+            <option value="type" selected>类型</option>
+            <option value="name">名称</option>
+            <option value="size">大小</option>
+            <option value="date">日期</option>
+        </select>
+        <select name="ascending">
+            <option value="0" selected>降序</option>
+            <option value="1">升序</option>
+        </select>
+        <div class="btn-groups">
+            <button class="submit" type="button">确定</button>
+            <button class="close">取消</button>
+        </div>
+    </form>
+</dialog>
+
 <main>
     {% if vd %}
-        {% for f in myfiles %}
-            <a href="{{ url_for('main.index', vd=vd, path=paths[loop.index0]) }}">
-                <div class="{{ type_class_map[f.file_type] }}"
-                     data-file-type="{{ f.file_type }}"></div>
-                <div class="filename">{{ f.filename }}</div>
-                {% if f.file_type != 'dir' %}
-                    <div class="size">{{ f.size_str }}</div>
-                {% endif %}
-            </a>
-        {% endfor %}
+        <div id="action">
+            <button type="button" id="sort">排序</button>
+        </div>
+
+        <div id="files">
+            {% for f in myfiles %}
+                <a href="{{ url_for('main.index', vd=vd, path=paths[loop.index0]) }}">
+                    <div class="{{ type_class_map[f.file_type] }}"
+                         data-file-type="{{ f.file_type }}"></div>
+                    <div class="filename">{{ f.filename }}</div>
+                    {% if f.file_type != 'dir' %}
+                        <div class="size">{{ f.size_str }}</div>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </div>
     {% else %}
-        {% for v in vd_list %}
-            <a href="{{ url_for('main.index', vd=v['dir_path']) }}">
-                <div class="icon-folder" data-file-type="dir"></div>
-                <div class="filename">{{ v['dir_path'] }}</div>
-            </a>
-        {% endfor %}
+        <div id="files">
+            {% for v in vd_list %}
+                <a href="{{ url_for('main.index', vd=v['dir_path']) }}">
+                    <div class="icon-folder" data-file-type="dir"></div>
+                    <div class="filename">{{ v['dir_path'] }}</div>
+                </a>
+            {% endfor %}
+        </div>
     {% endif %}
 </main>
 
 {% endblock content %}
+
+{% block javascript %}
+<script src="/static/js/index.js"></script>
+{% endblock javascript %}
