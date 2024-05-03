@@ -36,7 +36,7 @@
 
         <div id="files">
             {% for f in myfiles %}
-                <a href="{{ url_for('main.index', vd=vd, path=paths[loop.index0]) }}">
+                <a href="{{ url_for('main.index', vd=vd, path=paths[loop.index0], sort_by=sort_by, sort_ascending=sort_ascending) }}">
                     <div class="{{ type_class_map[f.file_type] }}"
                          data-file-type="{{ f.file_type }}"></div>
                     <div class="filename">{{ f.filename }}</div>

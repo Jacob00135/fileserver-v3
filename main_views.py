@@ -105,7 +105,9 @@ def index():
             'index.html',
             vd=vd,
             paths=[f.filename for f in mydir.files],
-            myfiles=mydir.files
+            myfiles=mydir.files,
+            sort_by=sort_by,
+            sort_ascending=int(sort_ascending)
         )
 
     # 检查path参数合法性
@@ -133,5 +135,7 @@ def index():
         'index.html',
         vd=vd,
         paths=[os.path.join(path, f.filename) for f in mydir.files],
-        myfiles=mydir.files
+        myfiles=mydir.files,
+        sort_by=sort_by,
+        sort_ascending=int(sort_ascending)
     )
