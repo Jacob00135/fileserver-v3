@@ -1,6 +1,7 @@
 import os
 from flask import (
-    Blueprint, render_template, abort, session, request, send_from_directory
+    Blueprint, render_template, abort, session, request, send_from_directory,
+    url_for
 )
 from config import Permission, get_db
 from utils import MyFile, MyDir
@@ -107,7 +108,8 @@ def index():
             paths=[f.filename for f in mydir.files],
             myfiles=mydir.files,
             sort_by=sort_by,
-            sort_ascending=int(sort_ascending)
+            sort_ascending=int(sort_ascending),
+            up_level_url=url_for('main.index')
         )
 
     # 检查path参数合法性
@@ -131,11 +133,35 @@ def index():
     mydir = MyDir(final_path)
     mydir.sort_files(by=sort_by, ascending=sort_ascending)
 
+    # 拼接上一级路径的路由
+    up_level_path = os.path.realpath(os.path.join(final_path, '..'))
+    print(final_path)
+    print(up_level_path)
+    if up_level_path == vd:
+        up_level_url = url_for(
+            'main.index',
+            vd=vd,
+            sort_by=sort_by,
+            sort_ascending=sort_ascending
+        )
+    else:
+        path_param = up_level_path[len(vd):]
+        if path_param[0] == '\\':
+            path_param = path_param[1:]
+        up_level_url = url_for(
+            'main.index',
+            vd=vd,
+            path=path_param,
+            sort_by=sort_by,
+            sort_ascending=sort_ascending
+        )
+
     return render_template(
         'index.html',
         vd=vd,
         paths=[os.path.join(path, f.filename) for f in mydir.files],
         myfiles=mydir.files,
         sort_by=sort_by,
-        sort_ascending=int(sort_ascending)
+        sort_ascending=int(sort_ascending),
+        up_level_url=up_level_url
     )

@@ -130,6 +130,7 @@ main > #action > #sort:hover {
     background-color: #576699;
 }
 
+main > #up-level,
 main > #files > a {
     display: flex;
     padding: 10px;
@@ -140,6 +141,7 @@ main > #files > a {
     font-size: 14px;
 }
 
+main > #up-level:hover,
 main > #files > a:hover {
     background-color: #373d50;
 }
@@ -194,6 +196,7 @@ main > #files > a > .size {
 
 /* 移动端适配 */
 @media (max-width: 575px) {
+    main > #up-level,
     main > #files > a {
         font-size: 12px;
     }

@@ -34,6 +34,8 @@
             <button type="button" id="sort">排序</button>
         </div>
 
+        <a href="{{ up_level_url }}" id="up-level">上一级</a>
+
         <div id="files">
             {% for f in myfiles %}
                 <a href="{{ url_for('main.index', vd=vd, path=paths[loop.index0], sort_by=sort_by, sort_ascending=sort_ascending) }}">
