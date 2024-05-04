@@ -114,9 +114,14 @@ main {
     margin: 0 auto;
 }
 
+main > .now-path {
+    padding: 8px;
+    color: rgb(194, 199, 208);
+    font-size: 14px;
+}
+
 main > #action > #sort {
     display: block;
-    margin-bottom: 10px;
     padding: 8px 14px;
     border-radius: 4px;
     border-width: 0;
@@ -196,6 +201,10 @@ main > #files > a > .size {
 
 /* 移动端适配 */
 @media (max-width: 575px) {
+    main > .now-path {
+        font-size: 12px;
+    }
+
     main > #up-level,
     main > #files > a {
         font-size: 12px;

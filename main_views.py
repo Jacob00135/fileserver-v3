@@ -109,7 +109,8 @@ def index():
             myfiles=mydir.files,
             sort_by=sort_by,
             sort_ascending=int(sort_ascending),
-            up_level_url=url_for('main.index')
+            up_level_url=url_for('main.index'),
+            now_path=vd
         )
 
     # 检查path参数合法性
@@ -135,8 +136,6 @@ def index():
 
     # 拼接上一级路径的路由
     up_level_path = os.path.realpath(os.path.join(final_path, '..'))
-    print(final_path)
-    print(up_level_path)
     if up_level_path == vd:
         up_level_url = url_for(
             'main.index',
@@ -163,5 +162,6 @@ def index():
         myfiles=mydir.files,
         sort_by=sort_by,
         sort_ascending=int(sort_ascending),
-        up_level_url=up_level_url
+        up_level_url=up_level_url,
+        now_path=final_path
     )
