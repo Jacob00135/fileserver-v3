@@ -141,7 +141,7 @@ def index():
             'main.index',
             vd=vd,
             sort_by=sort_by,
-            sort_ascending=sort_ascending
+            sort_ascending=int(sort_ascending)
         )
     else:
         path_param = up_level_path[len(vd):]
@@ -152,7 +152,7 @@ def index():
             vd=vd,
             path=path_param,
             sort_by=sort_by,
-            sort_ascending=sort_ascending
+            sort_ascending=int(sort_ascending)
         )
 
     return render_template(
