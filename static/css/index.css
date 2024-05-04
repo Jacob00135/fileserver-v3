@@ -120,7 +120,12 @@ main > .now-path {
     font-size: 14px;
 }
 
-main > #action > #sort {
+main > #action {
+    display: flex;
+    justify-content: center;
+}
+
+main > #action > button {
     display: block;
     padding: 8px 14px;
     border-radius: 4px;
@@ -131,7 +136,11 @@ main > #action > #sort {
     cursor: pointer;
 }
 
-main > #action > #sort:hover {
+main > #action > button:nth-child(n + 2) {
+    margin-left: 20px;
+}
+
+main > #action > button:hover {
     background-color: #576699;
 }
 

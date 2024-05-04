@@ -32,6 +32,9 @@
     {% if vd %}
         <div id="action">
             <button type="button" id="sort">排序</button>
+            {% if is_login() %}
+                <button type="button" id="upload">上传</button>
+            {% endif %}
         </div>
 
         <div class="now-path">{{ now_path }}</div>
