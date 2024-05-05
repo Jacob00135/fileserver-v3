@@ -1,23 +1,14 @@
 import os
-from functools import wraps
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import (
     Blueprint, request, session, url_for, render_template, flash,
     redirect, abort, current_app
 )
 from config import get_db, Permission
+from decorator import login_required
 from model import check_visible_dir_exists
 
 auth_blueprint = Blueprint('auth', __name__)
-
-
-def login_required(func):
-    @wraps(func)
-    def decorator(*args, **kwargs):
-        if session.get('user_id') is None:
-            return redirect(url_for('auth.login'))
-        return func(*args, **kwargs)
-    return decorator
 
 
 @auth_blueprint.route('/login', methods=['GET', 'POST'])
@@ -60,7 +51,7 @@ def logout():
     return redirect(url_for('main.index'))
 
 
-@auth_blueprint.route('modify_password', methods=['GET', 'POST'])
+@auth_blueprint.route('/modify_password', methods=['GET', 'POST'])
 @login_required
 def modify_password():
     if request.method == 'GET':

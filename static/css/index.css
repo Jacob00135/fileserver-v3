@@ -131,17 +131,29 @@ main > #action > button {
     border-radius: 4px;
     border-width: 0;
     background-color: #46537d;
+    color: #ebeae7;
     font-size: 14px;
-    color: rgb(194, 199, 208);
     cursor: pointer;
 }
 
-main > #action > button:nth-child(n + 2) {
+main > #action > a {
+    display: block;
+    padding: 8px 14px;
+    border-radius: 4px;
+    background-color: #46537d;
+    color: #ebeae7;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+main > #action > .action-btn:nth-child(n + 2) {
     margin-left: 20px;
 }
 
-main > #action > button:hover {
-    background-color: #576699;
+main > #action > button:hover,
+main > #action > a:hover {
+    background-color: #697bb8;
 }
 
 main > #up-level,

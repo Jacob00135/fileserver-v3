@@ -5,6 +5,7 @@ from flask import (
 )
 from config import Permission, get_db
 from utils import MyFile, MyDir
+from decorator import login_required
 
 main_blueprint = Blueprint('main', __name__)
 
@@ -116,8 +117,8 @@ def index():
     # 检查path参数合法性
     final_path = os.path.join(vd, path)
     if (not os.path.exists(final_path)) \
-       or (not os.path.isabs(final_path)) \
-       or (os.path.islink(final_path)):
+       or ('/' in final_path) \
+       or ('..' in final_path.split('\\')):
         abort(404)
     final_path = os.path.realpath(final_path)
 
@@ -164,4 +165,24 @@ def index():
         sort_ascending=int(sort_ascending),
         up_level_url=up_level_url,
         now_path=final_path
+    )
+
+
+@main_blueprint.route('/upload')
+@login_required
+def upload():
+    # 获取dir_path参数
+    dir_path = request.args.get('dir_path')
+    if dir_path is None:
+        abort(404)
+
+    # 检查dir_path参数
+    if (not os.path.exists(dir_path)) \
+       or ('/' in dir_path) \
+       or ('..' in dir_path.split('\\')):
+        abort(404)
+
+    return render_template(
+        'upload.html',
+        dir_path=dir_path
     )
