@@ -8,6 +8,33 @@
 
 {% block content %}
 
+<main>
+    <h1>上传文件</h1>
+
+    <form enctype="multipart/form-data"
+          action="{{ url_for('main.upload', dir_path=dir_path) }}"
+          method="post"
+          name="upload">
+
+        <div class="action">
+            <div class="file-input">
+                <div class="text">选择文件</div>
+                <input type="file" id="files" name="files" multiple required />
+            </div>
+            <button type="submit">开始上传</button>
+        </div>
+
+        <div class="dir-path">
+            <label>上传路径</label>
+            <input type="text" value="{{ dir_path }}" readonly />
+        </div>
+
+    </form>
+
+    <ul class="upload-info"></ul>
+
+</main>
+
 {% endblock content %}
 
 {% block javascript %}
