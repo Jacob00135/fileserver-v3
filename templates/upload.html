@@ -8,26 +8,6 @@
 
 {% block content %}
 
-<form enctype="multipart/form-data"
-      action="{{ url_for('main.upload', dir_path=dir_path) }}"
-      method="post"
-      name="upload">
-    <h1>上传文件</h1>
-    <div class="action">
-        <div class="file-input">
-            <div class="text">选择文件</div>
-            <input type="file" name="files" multiple required />
-        </div>
-        <button type="submit">开始上传</button>
-    </div>
-    <div class="dir-path">
-        <label for="dir-path">上传路径</label>
-        <input type="text" name="dir-path" id="dir-path"
-               value="{{ dir_path }}" readonly required />
-    </div>
-    <textarea readonly></textarea>
-</form>
-
 {% endblock content %}
 
 {% block javascript %}
