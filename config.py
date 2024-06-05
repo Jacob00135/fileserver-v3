@@ -31,6 +31,9 @@ class Config(object):
         '<', '>', '?'
     ]
 
+    # 限制上传文件的大小
+    MAX_CONTENT_LENGTH = 4 * 1024 * 1024 * 1024
+
 
 class DevelopmentConfig(Config):
     DATABASE_PATH = os.path.join(database_path, 'db_development.sqlite')

@@ -1,7 +1,7 @@
 import os
 from flask import (
     Blueprint, render_template, abort, session, request, send_from_directory,
-    url_for
+    url_for, jsonify
 )
 from config import Permission, get_db
 from utils import MyFile, MyDir
@@ -168,7 +168,7 @@ def index():
     )
 
 
-@main_blueprint.route('/upload')
+@main_blueprint.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload():
     # 获取dir_path参数
@@ -182,7 +182,22 @@ def upload():
        or ('..' in dir_path.split('\\')):
         abort(404)
 
-    return render_template(
-        'upload.html',
-        dir_path=dir_path
-    )
+    if request.method == 'GET':
+        return render_template(
+            'upload.html',
+            dir_path=dir_path
+        )
+
+    # 获取并保存文件
+    file = request.files.get('file')
+    if file is None:
+        return jsonify({'status': 0, 'message': '未收到file'})
+    save_path = os.path.join(dir_path, file.filename)
+    if os.path.exists(save_path):
+        return jsonify({'status': 0, 'message': '已有同名文件'})
+    try:
+        file.save(save_path)
+    except Exception as e:
+        return jsonify({'status': 0, 'message': str(e)})
+
+    return jsonify({'status': 1})

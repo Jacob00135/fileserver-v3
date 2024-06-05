@@ -120,9 +120,8 @@ form[name="upload"] .dir-path input {
 
 .upload-info > li {
     display: flex;
-    position: relative;
     margin-top: 10px;
-    padding: 10px 0 10px 0;
+    padding: 10px 0 10px 10px;
     border-radius: 4px;
     background: #4c536c linear-gradient(to left, #697bb8, #697bb8) no-repeat scroll top left;
     background-size: 0;
@@ -133,8 +132,6 @@ form[name="upload"] .dir-path input {
 
 .upload-info > li .filename {
     flex: 1;
-    padding-left: 10px;
-    font-size: 16px;
     word-wrap: break-word;
     word-break: break-all;
     font-size: 14px;
