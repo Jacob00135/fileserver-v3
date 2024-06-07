@@ -168,6 +168,15 @@ def index():
     )
 
 
+@main_blueprint.route('/file_exists')
+@login_required
+def file_exists():
+    path = request.args.get('path')
+    exists = int(os.path.exists(path))
+
+    return jsonify({'status': 1, 'data': exists})
+
+
 @main_blueprint.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload():

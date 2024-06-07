@@ -130,6 +130,16 @@ form[name="upload"] .dir-path input {
     transition: .5s background-size;
 }
 
+.upload-info > li.hint-message.warning {
+    background-color: #d5a106;
+    color: #fff;
+}
+
+.upload-info > li.hint-message.error {
+    background-color: #d43241;
+    color: #fff;
+}
+
 .upload-info > li .filename {
     flex: 1;
     word-wrap: break-word;
@@ -174,6 +184,10 @@ form[name="upload"] .dir-path input {
     .upload-info > li .progress {
         width: 32px;
         height: 16px;
+        font-size: 12px;
+    }
+
+    .upload-info > li.hint-message {
         font-size: 12px;
     }
 }

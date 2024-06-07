@@ -14,7 +14,8 @@
     <form enctype="multipart/form-data"
           action="{{ url_for('main.upload', dir_path=dir_path) }}"
           method="post"
-          name="upload">
+          name="upload"
+          data-file-exists-url="{{ url_for('main.file_exists', path=dir_path) }}">
 
         <div class="action">
             <div class="file-input">
